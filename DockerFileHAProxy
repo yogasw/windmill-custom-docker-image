@@ -1,0 +1,24 @@
+FROM ghcr.io/windmill-labs/windmill:main
+
+USER root
+
+# Install nginx and iptables
+RUN apt-get update && apt-get install -y haproxy && rm -rf /var/lib/apt/lists/*
+
+# Remove default nginx config
+RUN rm /etc/nginx/sites-enabled/default
+
+# Set environment variables
+ENV JSON_FMT=true \
+    DISABLE_RESPONSE_LOGS=false \
+    CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
+
+# Copy external start.sh script into container
+COPY COPY haproxy.cfg /etc/haproxy/haproxy.cfg
+COPY COPY log_response_body.lua /etc/haproxy/log_response_body.lua
+RUN chmod +x /start.sh
+
+# Expose only nginx port to outside
+EXPOSE 80
+
+CMD ["/bin/bash", "/start_haproxy.sh"]
