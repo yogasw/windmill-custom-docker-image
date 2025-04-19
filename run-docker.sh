@@ -41,5 +41,5 @@ docker run -d \
   --link windmill_db:db \
   -e DATABASE_URL=postgres://postgres:changeme@db/windmill?sslmode=disable \
   -e MODE=worker \
-  -e WORKER_GROUP=default 
+  -e WORKER_GROUP=default \
   ${WM_IMAGE}
