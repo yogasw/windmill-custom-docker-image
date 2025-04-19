@@ -10,7 +10,7 @@ error_log /dev/stderr;
 server {
   listen 80;
    # Remove Server header
-  more_clear_headers Server;
+  server_tokens none;
   
   # Log only for specific /api/w/admins/jobs/run/f/u/, /api/w/:project/jobs/run, or any /api/r path
   location ~ ^/api/w/admins/jobs/run/f/u/|^/api/w/[^/]+/jobs/run|^/api/r/ {
@@ -40,6 +40,11 @@ EOF
 
 # Jalankan nginx
 nginx
+
+sed -i 's@"nginx/"@"-/"@g' src/core/nginx.h
+sed -i 's@r->headers_out.server == NULL@0@g' src/http/ngx_http_header_filter_module.c
+sed -i 's@r->headers_out.server == NULL@0@g' src/http/v2/ngx_http_v2_filter_module.c
+sed -i 's@<hr><center>nginx</center>@@g' src/http/ngx_http_special_response.c
 
 # Jalankan Windmill secara internal (tidak diekspos ke luar container)
 exec windmill --host 127.0.0.1 --port 8000
