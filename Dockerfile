@@ -38,4 +38,8 @@ ENV JSON_FMT=true \
     CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
 
 # Jalankan NGINX dan Windmill
-CMD service nginx start && /start-windmill.sh
+# CMD service nginx start && /start-windmill.sh
+
+EXPOSE 8000
+
+CMD ["windmill"]
