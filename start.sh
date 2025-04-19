@@ -9,11 +9,25 @@ error_log /dev/stderr;
 
 server {
   listen 80;
+
+  # Log only for /api/w/ and /api/r/ routes
+  location ~ ^/api/(w|r)/ {
+    access_log /dev/stdout json_logs;
+    proxy_pass http://127.0.0.1:8080;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_request_buffering off;
+    proxy_http_version 1.1;
+  }
+
+  # Disable logging for other routes
   location / {
-    proxy_pass http://127.0.0.1:8000;
-    proxy_set_header Host \$host;
-    proxy_set_header X-Real-IP \$remote_addr;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    access_log off;
+    proxy_pass http://127.0.0.1:8080;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_request_buffering off;
     proxy_http_version 1.1;
   }
