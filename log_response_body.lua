@@ -7,15 +7,6 @@ core.register_action("log_response_body", { "http-res" }, function(txn)
     else
         txn:set_var("res.body", "")
     end
-
-    -- Escape request body
-    local req_body = txn:get_var("req.body")
-    if req_body then
-        req_body = req_body:gsub('"', '\\"')
-        txn:set_var("req.body", req_body)
-    else
-        txn:set_var("req.body", "")
-    end
 end)
 
 core.register_action("read_full_request_body", { "http-req" }, function(txn)
