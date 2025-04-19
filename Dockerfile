@@ -37,9 +37,17 @@ ENV JSON_FMT=true \
     DISABLE_RESPONSE_LOGS=false \
     CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
 
-# Batasi akses ke port 8000 dari luar container
-RUN iptables -A INPUT -p tcp --dport 8000 ! -s 127.0.0.1 -j DROP
-RUN iptables -A INPUT -p tcp -s 127.0.0.1 --dport 8000 -j ACCEPT
+# Create start.sh at build time
+RUN echo '#!/bin/bash\n\
+# Allow local-only access to port 8000\n\
+iptables -A INPUT -p tcp --dport 8000 ! -s 127.0.0.1 -j DROP\n\
+iptables -A INPUT -p tcp -s 127.0.0.1 --dport 8000 -j ACCEPT\n\
+\n\
+# Start nginx in background\n\
+nginx\n\
+\n\
+# Run windmill on internal-only port\n\
+exec windmill --host 127.0.0.1 --port 8080' > /start.sh && chmod +x /start.sh
 
 # Expose port for external traffic (NGINX)
 EXPOSE 80
