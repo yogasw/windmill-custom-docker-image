@@ -9,8 +9,6 @@ error_log /dev/stderr;
 
 server {
   listen 80;
-   # Remove Server header
-  server_tokens none;
   
   # Log only for specific /api/w/admins/jobs/run/f/u/, /api/w/:project/jobs/run, or any /api/r path
   location ~ ^/api/w/admins/jobs/run/f/u/|^/api/w/[^/]+/jobs/run|^/api/r/ {
