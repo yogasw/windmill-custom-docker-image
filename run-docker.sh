@@ -71,7 +71,7 @@ docker run -d \
   --link windmill_db:db \
   -e DATABASE_URL=postgres://postgres:changeme@db/windmill?sslmode=disable \
   -e MODE=server \
-  -p 8000:8000 \
+  -p 80:80 \
   --env-file .env \
   -p 2525:2525 \
   windmill-custom
