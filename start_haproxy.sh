@@ -1,5 +1,7 @@
-# Jalankan Windmill secara internal (tidak diekspos ke luar container)
-exec windmill --host 127.0.0.1 --port 8000
+#!/bin/bash
 
+# Start Windmill di background
+windmill --host 127.0.0.1 --port 8000 &
 
-# systemctl start haproxy
+# Start HAProxy di foreground
+haproxy -f /etc/haproxy/haproxy.cfg -db
