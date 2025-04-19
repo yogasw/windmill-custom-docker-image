@@ -7,9 +7,11 @@ log_format json_logs escape=json '{"timestamp":"\$time_iso8601","level":"INFO","
 access_log /dev/stdout json_logs;
 error_log /dev/stderr;
 
+server_tokens off; # hides version on 404 or 500 pages
+more_clear_headers 'Server'; # removes Server header from response headers
+
 server {
   listen 80;
-  server_tokens off; 
   
   # Log only for specific /api/w/admins/jobs/run/f/u/, /api/w/:project/jobs/run, or any /api/r path
   location ~ ^/api/w/admins/jobs/run/f/u/|^/api/w/[^/]+/jobs/run|^/api/r/ {
