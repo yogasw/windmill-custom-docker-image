@@ -12,7 +12,8 @@ log_format json_logs escape=json '{
   "user_agent":"\$http_user_agent"
 }';
 
-access_log /var/log/nginx/access.log json_logs;
+access_log /dev/stdout json_logs;
+error_log /dev/stderr;
 
 server {
   listen 80;
