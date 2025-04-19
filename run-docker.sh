@@ -16,6 +16,8 @@ JSON_FMT=true
 DISABLE_RESPONSE_LOGS=false
 BASE_URL=http://154.90.49.247:8000
 WM_IMAGE=ghcr.io/windmill-labs/windmill:main
+CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
+
 
 # Jalankan kontainer PostgreSQL
 docker run -d \
