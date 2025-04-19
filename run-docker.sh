@@ -6,6 +6,9 @@ docker kill windmill_worker
 
 docker rm windmill_server
 docker rm windmill_worker
+
+ docker start windmill_db windmill_server windmill_db
+ docker kill windmill_db windmill_server windmill_db
  
 # sample env
 DATABASE_URL=postgres://postgres:changeme@localhost:5432/windmill?sslmode=disable
