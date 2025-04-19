@@ -1,11 +1,11 @@
 
 #!/bin/bash
 set -e
-# docker kill windmill_server
-# docker kill windmill_worker
+docker kill windmill_server
+docker kill windmill_worker
 
-# docker rm windmill_server
-# docker rm windmill_worker
+docker rm windmill_server
+docker rm windmill_worker
  
 # sample env
 DATABASE_URL=postgres://postgres:changeme@localhost:5432/windmill?sslmode=disable
@@ -48,3 +48,10 @@ docker run -d \
   -e MODE=worker \
   -e WORKER_GROUP=default \
   ${WM_IMAGE}
+
+
+ #menampilkan logs
+docker logs -f windmill_server 2>&1 | sed 's/^/[SERVER] /' & \
+docker logs -f windmill_worker 2>&1 | sed 's/^/[WORKER] /' & \
+wait
+
