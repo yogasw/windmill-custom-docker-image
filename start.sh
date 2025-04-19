@@ -6,6 +6,7 @@ log_format json_logs escape=json '{"timestamp":"\$time_iso8601","level":"INFO","
 
 access_log /dev/stdout json_logs;
 error_log /dev/stderr;
+server_tokens off;
 
 server {
   listen 80;
@@ -14,6 +15,7 @@ server {
   location ~ ^/api/w/admins/jobs/run/f/u/|^/api/w/[^/]+/jobs/run|^/api/r/ {
     access_log /dev/stdout json_logs;
     proxy_pass http://127.0.0.1:8000;
+    proxy_pass_request_headers on;
     proxy_set_header Host \$host;
     proxy_set_header X-Real-IP \$remote_addr;
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -25,6 +27,7 @@ server {
   location / {
     access_log off;
     proxy_pass http://127.0.0.1:8000;
+    proxy_pass_request_headers on;
     proxy_set_header Host \$host;
     proxy_set_header X-Real-IP \$remote_addr;
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
