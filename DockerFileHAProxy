@@ -7,8 +7,7 @@ RUN apt-get update && apt-get install -y haproxy && rm -rf /var/lib/apt/lists/*
 
 # Set default environment variables
 ENV JSON_FMT=true \
-    DISABLE_RESPONSE_LOGS=false \
-    CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
+    DISABLE_RESPONSE_LOGS=false
 
 # Copy external start.sh script into container
 COPY haproxy.cfg /etc/haproxy/haproxy.cfg
