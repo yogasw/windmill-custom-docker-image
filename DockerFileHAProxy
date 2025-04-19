@@ -14,8 +14,8 @@ ENV JSON_FMT=true \
     CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
 
 # Copy external start.sh script into container
-COPY COPY haproxy.cfg /etc/haproxy/haproxy.cfg
-COPY COPY log_response_body.lua /etc/haproxy/log_response_body.lua
+COPY haproxy.cfg /etc/haproxy/haproxy.cfg
+COPY log_response_body.lua /etc/haproxy/log_response_body.lua
 RUN chmod +x /start_haproxy.sh
 
 # Expose only nginx port to outside
