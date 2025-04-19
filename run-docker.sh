@@ -76,4 +76,19 @@ docker run -d \
   -p 2525:2525 \
   windmill-custom
 
-  
+
+git pull origin main
+docker kill windmill_server
+docker rm windmill_server
+docker build -t windmill-custom .
+docker run -d \
+  --name windmill_server \
+  --link windmill_db:db \
+  -e DATABASE_URL=postgres://postgres:changeme@db/windmill?sslmode=disable \
+  -e MODE=server \
+  -p 80:80 \
+  --env-file .env \
+  -p 2525:2525 \
+  windmill-custom
+
+  docker logs windmill_server -f
