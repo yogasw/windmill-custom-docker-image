@@ -42,4 +42,4 @@ ENV JSON_FMT=true \
 
 EXPOSE 8000
 
-CMD ["windmill"]
+CMD ["windmill --host 127.0.0.1 --port 8080"]
