@@ -3,7 +3,7 @@ FROM ghcr.io/windmill-labs/windmill:main
 USER root
 
 # Install nginx and iptables
-RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y nginx nginx-extras && rm -rf /var/lib/apt/lists/*
 
 # Remove default nginx config
 RUN rm /etc/nginx/sites-enabled/default
