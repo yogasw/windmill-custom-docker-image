@@ -2,13 +2,13 @@ FROM ghcr.io/windmill-labs/windmill:main
 
 USER root
 
-# Instal NGINX
+# Install NGINX
 RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
 
-# Hapus konfigurasi default NGINX
+# Remove default config
 RUN rm /etc/nginx/sites-enabled/default
 
-# Tambahkan konfigurasi NGINX kustom
+# Add custom NGINX config
 RUN echo '\
 log_format json_logs escape=json '\''{\
   "time":"$time_local",\
@@ -21,9 +21,9 @@ log_format json_logs escape=json '\''{\
 }'\'';\n\
 access_log /var/log/nginx/access.log json_logs;\n\
 server {\n\
-  listen 8000;\n\
+  listen 80;\n\
   location / {\n\
-    proxy_pass http://127.0.0.1:8000;\n\
+    proxy_pass http://127.0.0.1:8080;\n\
     proxy_set_header Host $host;\n\
     proxy_set_header X-Real-IP $remote_addr;\n\
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
@@ -32,14 +32,15 @@ server {\n\
   }\n\
 }' > /etc/nginx/conf.d/default.conf
 
-# Tetapkan variabel lingkungan default untuk Windmill
+# Set environment variables
 ENV JSON_FMT=true \
     DISABLE_RESPONSE_LOGS=false \
     CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
 
+# Expose port for external traffic (NGINX)
+EXPOSE 80
+
 # Jalankan NGINX dan Windmill
-# CMD service nginx start && /start-windmill.sh
+CMD windmill && service nginx start
 
-EXPOSE 8000
-
-CMD ["windmill", "--host", "127.0.0.1", "--port", "8080"]
+# CMD ["windmill", "--host", "127.0.0.1", "--port", "8080"]
