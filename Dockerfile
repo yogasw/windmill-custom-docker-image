@@ -23,7 +23,7 @@ access_log /var/log/nginx/access.log json_logs;\n\
 server {\n\
   listen 8000;\n\
   location / {\n\
-    proxy_pass http://127.0.0.1:8001;\n\
+    proxy_pass http://127.0.0.1:8000;\n\
     proxy_set_header Host $host;\n\
     proxy_set_header X-Real-IP $remote_addr;\n\
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
@@ -42,4 +42,4 @@ ENV JSON_FMT=true \
 
 EXPOSE 8000
 
-CMD ["windmill --host 127.0.0.1 --port 8080"]
+CMD ["windmill", "--host", "127.0.0.1", "--port", "8080"]
