@@ -9,18 +9,21 @@ core.register_action("log_response_body", { "http-res" }, function(txn)
     end
 end)
 
-core.register_action("read_full_request_body", { "http-req" }, function(txn)
-    local body = txn.http:req_get_body()
+core.register_action("read_full_body", { "http-req" }, function(txn)
+    local http = txn.http
+    if not http then
+        core.Alert("No HTTP context in read_full_body!")
+        return
+    end
 
+    local body = http:req_get_body()
     if body == nil then
         body = "-"
     end
 
-    -- Escape double quotes for safe logging
     body = body:gsub('"', '\\"')
-
     txn:set_var("req.body", body)
 
-    -- Optional: log ke stdout HAProxy
     core.Info("Request body: " .. body)
 end)
+
