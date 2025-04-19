@@ -22,4 +22,4 @@ EOF
 
 # Start nginx and windmill
 nginx
-exec windmill
+exec windmill --host 127.0.0.1 --port 8080
