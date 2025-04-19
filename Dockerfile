@@ -37,6 +37,10 @@ ENV JSON_FMT=true \
     DISABLE_RESPONSE_LOGS=false \
     CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
 
+# Batasi akses ke port 8000 dari luar container
+iptables -A INPUT -p tcp --dport 8000 ! -s 127.0.0.1 -j DROP
+iptables -A INPUT -p tcp -s 127.0.0.1 --dport 8000 -j ACCEPT
+
 # Expose port for external traffic (NGINX)
 EXPOSE 80
 
