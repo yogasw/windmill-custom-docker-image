@@ -1,6 +1,5 @@
 
 #!/bin/bash
-WM_IMAGE="ghcr.io/windmill-labs/windmill:main"
 set -e
 
 # sample env
@@ -23,12 +22,7 @@ docker run -d \
   --health-retries=5 \
   postgres:14
 
-# Tunggu hingga database siap
-echo "Menunggu database siap..."
-until docker exec windmill_db pg_isready -U postgres > /dev/null 2>&1; do
-  sleep 2
-done
-echo "Database siap."
+WM_IMAGE="ghcr.io/windmill-labs/windmill:main"
 
 # Jalankan kontainer Windmill Server
 docker run -d \
