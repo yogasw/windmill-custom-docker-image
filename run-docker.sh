@@ -1,7 +1,12 @@
 
 #!/bin/bash
 set -e
+# docker kill windmill_server
+# docker kill windmill_worker
 
+# docker rm windmill_server
+# docker rm windmill_worker
+ 
 # sample env
 DATABASE_URL=postgres://postgres:changeme@localhost:5432/windmill?sslmode=disable
 JSON_FMT=true
