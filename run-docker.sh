@@ -90,8 +90,8 @@ docker run -d \
   --env-file .env \
   -p 2525:2525 \
   windmill-custom
-
-  docker logs windmill_server -f
+ 
+  docker logs windmill_server -f | grep "INBOUND_REQUEST"
 # docker build -t windmill-custom .
 # docker run -d \
 #   --name windmill_server \
