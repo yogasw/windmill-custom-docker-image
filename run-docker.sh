@@ -64,3 +64,16 @@ docker logs -f windmill_server 2>&1 | sed 's/^/[SERVER] /' & \
 docker logs -f windmill_worker 2>&1 | sed 's/^/[WORKER] /' & \
 wait
 
+
+
+docker run -d \
+  --name windmill_server \
+  --link windmill_db:db \
+  -e DATABASE_URL=postgres://postgres:changeme@db/windmill?sslmode=disable \
+  -e MODE=server \
+  -p 8000:8000 \
+  --env-file .env \
+  -p 2525:2525 \
+  windmill-custom
+
+  
