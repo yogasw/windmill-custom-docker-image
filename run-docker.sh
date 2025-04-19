@@ -9,14 +9,18 @@ docker rm windmill_worker
 
  docker start windmill_db windmill_server windmill_db
  docker kill windmill_db windmill_server windmill_db
+
+ WM_IMAGE=ghcr.io/windmill-labs/windmill:main
+
+ docker exec -it --user root windmill_server /bin/sh
  
 # sample env
 DATABASE_URL=postgres://postgres:changeme@localhost:5432/windmill?sslmode=disable
 JSON_FMT=true
 DISABLE_RESPONSE_LOGS=false
-BASE_URL=http://154.90.49.247:8000
-WM_IMAGE=ghcr.io/windmill-labs/windmill:main
+BASE_URL=http://156.244.1.242:8000
 CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
+
 
 
 # Jalankan kontainer PostgreSQL
