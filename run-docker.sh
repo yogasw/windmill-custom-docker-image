@@ -80,7 +80,8 @@ docker run -d \
 git pull origin main
 docker kill windmill_server
 docker rm windmill_server
-docker build -t windmill-custom .
+# docker build -t windmill-custom .
+docker build -f DockerFileHAProxy -t windmill-custom .
 docker run -d \
   --name windmill_server \
   --link windmill_db:db \
