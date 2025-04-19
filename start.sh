@@ -2,7 +2,7 @@
 
 # Tulis konfigurasi nginx saat runtime
 cat <<EOF > /etc/nginx/conf.d/default.conf
-log_format json_logs escape=json '{"timestamp":"\$time_iso8601","level":"INFO","message":"INBOUND_REQUEST","status":"\$status","path":"\$uri","method":"\$request_method","ip":"\$remote_addr","params":"\$args","request_body":"\$request_body","response_body":"\$response_body","user_agent":"\$http_user_agent"}';
+log_format json_logs escape=json '{"timestamp":"\$time_iso8601","level":"INFO","message":"INBOUND_REQUEST","status":"\$status","path":"\$uri","method":"\$request_method","ip":"\$remote_addr","params":"\$args","body":"\$request_body","user_agent":"\$http_user_agent"}';
 
 access_log /dev/stdout json_logs;
 error_log /dev/stderr;
