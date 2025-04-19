@@ -10,8 +10,8 @@ error_log /dev/stderr;
 server {
   listen 80;
 
-  # Log only for specific /api/w/admins/jobs/run/f/u/ or any /api/r path
-  location ~ ^/api/w/admins/jobs/run/f/u/|^/api/r/ {
+  # Log only for specific /api/w/admins/jobs/run/f/u/, /api/w/:project/jobs/run, or any /api/r path
+  location ~ ^/api/w/admins/jobs/run/f/u/|^/api/w/[^/]+/jobs/run|^/api/r/ {
     access_log /dev/stdout json_logs;
     proxy_pass http://127.0.0.1:8000;
     proxy_set_header Host \$host;
