@@ -78,7 +78,7 @@ docker run -d \
 
 
 git pull origin main
-docker build -f DockerFileHAProxy -t windmill-custom .
+docker build -f DockerfileNginx -t windmill-custom .
 docker kill windmill_server
 docker rm windmill_server
 docker run -d \
