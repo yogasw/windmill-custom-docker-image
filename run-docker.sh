@@ -7,8 +7,8 @@ docker kill windmill_worker
 docker rm windmill_server
 docker rm windmill_worker
 
- docker start windmill_db windmill_server windmill_db
- docker kill windmill_db windmill_server windmill_db
+ docker start windmill_db windmill_server windmill_worker
+ docker kill windmill_db windmill_server windmill_worker
 
  WM_IMAGE=ghcr.io/windmill-labs/windmill:main
 
