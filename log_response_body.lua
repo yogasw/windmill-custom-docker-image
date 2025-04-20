@@ -1,30 +1,17 @@
 core.register_action("log_response_body", { "http-res" }, function(txn)
-    -- Escape response body
-    local res_body = txn:get_var("res.body")
-    if res_body then
-        res_body = res_body:gsub('"', '\\"')
-        txn:set_var("res.body", res_body)
-    else
-        txn:set_var("res.body", "")
-    end
-end)
-
--- Fungsi untuk baca body request
-core.register_action("read_full_body", { "http-req" }, function(txn)
+    local response_body = ""
     local http = txn.http
-    if not http then
-        core.Alert("read_full_body: txn.http is nil")
-        txn:set_var("req.body", "-")
-        return
+
+    if http then
+        local len = http:res_get_body_length()
+        if len and len > 0 then
+            local body = http:res_get_body()
+            if body then
+                response_body = body:gsub('"', '\\"')  -- escape quote for JSON log
+            end
+        end
     end
 
-    local body = http:req_get_body()
-    if not body then
-        body = "-"
-    end
-
-    body = body:gsub('"', '\\"')
-    txn:set_var("req.body", body)
-    core.Info("Request body: " .. body)
+    txn:set_var("res.body", response_body or "-")
+    core.Info("Response body: " .. response_body)
 end)
-
