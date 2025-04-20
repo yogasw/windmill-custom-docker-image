@@ -9,9 +9,12 @@ RUN apt-get update && apt-get install -y nginx libnginx-mod-http-headers-more-fi
 RUN rm /etc/nginx/sites-enabled/default
 
 # Set environment variables
-ENV JSON_FMT=true \
-    DISABLE_RESPONSE_LOGS=false \
-    CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
+ENV JSON_FMT=true
+ENV DISABLE_RESPONSE_LOGS=false
+ENV CREATE_WORKSPACE_REQUIRE_SUPERADMIN=true
+ENV DENO_PATH=/usr/bin/deno
+ENV BUN_PATH=/usr/bin/bun
+ENV GO_PATH=/usr/local/go/bin/go
 
 # Copy external start.sh script into container
 COPY start.sh /start.sh
