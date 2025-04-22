@@ -38,16 +38,22 @@ jobs:
           echo "Last released: $last"
           echo "last=$last" >> $GITHUB_OUTPUT
 
-      - name: Compare and skip if same version
-        if: ${{ steps.latest_tag.outputs.latest == steps.last_released.outputs.last }}
+      - name: Decide whether to skip build
+        id: should_skip
         run: |
-          echo "No new version detected. Skipping build."
-          exit 0
+          if [ "${{ steps.latest_tag.outputs.latest }}" = "${{ steps.last_released.outputs.last }}" ]; then
+            echo "Build not needed"
+            echo "skip_build=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip_build=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Set WINDMILL_VERSION env
+        if: steps.should_skip.outputs.skip_build == 'false'
         run: echo "WINDMILL_VERSION=${{ steps.latest_tag.outputs.latest }}" >> $GITHUB_ENV
 
       - name: Log in to GitHub Container Registry
+        if: steps.should_skip.outputs.skip_build == 'false'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -55,10 +61,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Replace version in Dockerfile template
+        if: steps.should_skip.outputs.skip_build == 'false'
         run: |
           sed "s|__WINDMILL_VERSION__|$WINDMILL_VERSION|g" DockerfileNginx > Dockerfile
 
       - name: Build Docker image
+        if: steps.should_skip.outputs.skip_build == 'false'
         run: |
           REPO_NAME=$(basename ${{ github.repository }})
           TAG_SUFFIX="nginx-${WINDMILL_VERSION}"
@@ -66,6 +74,7 @@ jobs:
           docker tag ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX ghcr.io/${{ github.repository_owner }}/$REPO_NAME:nginx-latest
 
       - name: Push Docker image
+        if: steps.should_skip.outputs.skip_build == 'false'
         run: |
           REPO_NAME=$(basename ${{ github.repository }})
           TAG_SUFFIX="nginx-${WINDMILL_VERSION}"
@@ -73,9 +82,11 @@ jobs:
           docker push ghcr.io/${{ github.repository_owner }}/$REPO_NAME:nginx-latest
 
       - name: Update last-version.txt
+        if: steps.should_skip.outputs.skip_build == 'false'
         run: echo "$WINDMILL_VERSION" > last-version.txt
 
       - name: Commit and push updated last-version.txt
+        if: steps.should_skip.outputs.skip_build == 'false'
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
