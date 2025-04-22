@@ -10,9 +10,6 @@ jobs:
   build-windmill-nginx:
     name: Build Windmill + Nginx
     runs-on: ubuntu-latest
-
-    env:
-      TAG_SUFFIX: nginx-${{ env.WINDMILL_VERSION }}
       
     permissions:
       contents: read
