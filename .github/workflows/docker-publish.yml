@@ -54,11 +54,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Replace version in Dockerfile template
+        run: |
+          sed "s|__WINDMILL_VERSION__|$WINDMILL_VERSION|g" DockerfileNginx > Dockerfile
+
       - name: Build Docker image
         run: |
           REPO_NAME=$(basename ${{ github.repository }})
           TAG_SUFFIX="nginx-${WINDMILL_VERSION}"
-          docker build -f DockerfileNginx -t ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX .
+          docker build -f Dockerfile -t ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX .
           docker tag ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX ghcr.io/${{ github.repository_owner }}/$REPO_NAME:nginx-latest
 
       - name: Push Docker image
