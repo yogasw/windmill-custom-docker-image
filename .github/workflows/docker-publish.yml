@@ -3,7 +3,7 @@ name: Manual Docker Build & Push
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 */2 * *'  # Setiap 2 hari sekali jam 10 pagi WIB
+    - cron: '0 0 */3 * *'  # Setiap 2 hari sekali jam 10 pagi WIB
 
 jobs:
   build-and-push:
