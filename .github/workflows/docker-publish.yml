@@ -24,7 +24,7 @@ jobs:
 
       - name: Generate Dockerfile from template
         run: |
-          sed "s|__WINDMILL_VERSION__|$WINDMILL_VERSION|g" DockerfileNginx > DockerfileNginx
+          sed "s|__WINDMILL_VERSION__|$WINDMILL_VERSION|g" DockerfileNginx > Dockerfile
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f DockerfileNginx -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$WINDMILL_VERSION .
+          docker build -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$WINDMILL_VERSION .
 
       - name: Push Docker image
         run: |
