@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: windmill-nginx
+      TAG_SUFFIX: nginx-${{ env.WINDMILL_VERSION }}
       
     permissions:
       contents: read
@@ -35,11 +35,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$WINDMILL_VERSION .
+          REPO_NAME=$(basename ${{ github.repository }})
+          docker build -t ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$WINDMILL_VERSION
+          REPO_NAME=$(basename ${{ github.repository }})
+          docker push ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX
 
   # Placeholder for future job
   future-job:
