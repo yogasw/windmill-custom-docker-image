@@ -23,7 +23,7 @@ jobs:
       - name: Get latest tag from windmill-labs
         id: latest_tag
         run: |
-          latest=$(curl -s https://api.github.com/repos/windmill-labs/windmill/tags | jq -r '.[0].name')
+          latest=$(curl -s https://api.github.com/repos/windmill-labs/windmill/tags | jq -r '.[0].name' | sed 's/^v//')
           echo "Latest tag: $latest"
           echo "latest=$latest" >> $GITHUB_OUTPUT
 
