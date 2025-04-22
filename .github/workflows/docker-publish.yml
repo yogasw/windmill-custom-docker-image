@@ -36,13 +36,14 @@ jobs:
       - name: Build Docker image
         run: |
           REPO_NAME=$(basename ${{ github.repository }})
+          TAG_SUFFIX="nginx-${WINDMILL_VERSION}"
           docker build -t ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX .
 
       - name: Push Docker image
         run: |
           REPO_NAME=$(basename ${{ github.repository }})
+          TAG_SUFFIX="nginx-${WINDMILL_VERSION}"
           docker push ghcr.io/${{ github.repository_owner }}/$REPO_NAME:$TAG_SUFFIX
-
   # Placeholder for future job
   future-job:
     name: Future Docker Job
