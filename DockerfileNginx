@@ -1,4 +1,4 @@
-FROM ghcr.io/windmill-labs/windmill:1.483
+FROM ghcr.io/windmill-labs/windmill:__WINDMILL_VERSION__
 
 USER root
 
