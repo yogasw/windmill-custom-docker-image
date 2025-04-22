@@ -1,0 +1,51 @@
+name: Manual Docker Image Tasks
+
+on:
+  workflow_dispatch:
+  
+env:
+  WINDMILL_VERSION: 1.483
+
+jobs:
+  build-windmill-nginx:
+    name: Build Windmill + Nginx
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: windmill-nginx
+      
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate Dockerfile from template
+        run: |
+          sed "s|__WINDMILL_VERSION__|$WINDMILL_VERSION|g" DockerfileNginx.template > DockerfileNginx
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -f DockerfileNginx -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION .
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION
+
+  # Placeholder for future job
+  future-job:
+    name: Future Docker Job
+    runs-on: ubuntu-latest
+    if: false  # Tidak akan pernah jalan sampai kamu aktifkan
+
+    steps:
+      - run: echo "This is a placeholder for your future job."
