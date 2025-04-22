@@ -35,11 +35,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f DockerfileNginx -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION .
+          docker build -f DockerfileNginx -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$WINDMILL_VERSION .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$VERSION
+          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:$WINDMILL_VERSION
 
   # Placeholder for future job
   future-job:
